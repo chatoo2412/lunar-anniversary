@@ -1,6 +1,6 @@
 {
   "name": "lunar-anniversary",
-  "version": "1.0.0-beta",
+  "version": "1.0.0",
   "description": "Displays Korean lunar anniversary.",
   "dependencies": {},
   "devDependencies": {
