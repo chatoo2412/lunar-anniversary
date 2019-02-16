@@ -1,4 +1,4 @@
-import { EntryModel, add } from "./storage.js";
+import { EntryModel, add, remove } from "./storage.js";
 import { getNextAnniversary } from "./api.js";
 import { formatDate, getDateDiff } from "./date.js";
 
@@ -43,6 +43,19 @@ export const renderItem = async ({
   }
 
   const tr = document.createElement("tr");
+  const td = document.createElement("td");
+  const deleteButton = document.createElement("button");
+
+  deleteButton.textContent = "삭제";
+  deleteButton.addEventListener("click", event => {
+    remove(key);
+
+    // TODO. GC.
+    tr.remove();
+  });
+
+  td.appendChild(deleteButton);
+  tr.appendChild(td);
 
   const tagString = `
     <td>${name}</td>
@@ -52,7 +65,7 @@ export const renderItem = async ({
     <td>로딩중</td>
 `;
 
-  tr.insertAdjacentHTML("afterbegin", tagString);
+  tr.insertAdjacentHTML("beforeend", tagString);
 
   content.appendChild(tr);
 

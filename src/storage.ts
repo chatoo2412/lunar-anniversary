@@ -44,3 +44,11 @@ export const add = (newItem: ItemModel) => {
 
   return newEntry;
 };
+
+export const remove = (key: string) => {
+  const entries = getSaved();
+
+  const newEntries = entries.filter(entry => entry.key !== key);
+
+  localStorage.setItem(storageKey, JSON.stringify(newEntries));
+};
