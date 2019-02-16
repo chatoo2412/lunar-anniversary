@@ -1,3 +1,6 @@
-import { getDates } from "./api.js";
+import { initForm, renderItem } from "./render.js";
+import { getSaved } from "./storage.js";
 
-getDates(1, 11).then(console.log);
+initForm();
+
+getSaved().map(entry => renderItem(entry));
