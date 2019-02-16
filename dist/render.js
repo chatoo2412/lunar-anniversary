@@ -47,20 +47,34 @@ export const renderItem = async ({
   });
   td.appendChild(deleteButton);
   tr.appendChild(td);
-  const tagString = `
-    <td>${name}</td>
-    <td>${formatDate(new Date(lunarDate.year, lunarDate.month - 1, lunarDate.day))}</td>
-    <td>로딩중</td>
-`;
-  tr.insertAdjacentHTML("beforeend", tagString);
+  tr.insertAdjacentHTML("beforeend", `
+  <td>${name}</td>
+  <td>${formatDate(new Date(lunarDate.year, lunarDate.month - 1, lunarDate.day))}</td>
+`);
   content.appendChild(tr);
   const date = await getNextAnniversary(lunarDate.month, lunarDate.day);
-  const nextDate = tr.lastElementChild;
+  tr.insertAdjacentHTML("beforeend", date ? `
+    <td>${formatDate(date)}</td>
+    <td class="remaining">${getDateDiff(date)}일</td>
+  ` : `<td>오류</td>`);
+  return date;
+};
+export const sort = () => {
+  const content = document.querySelector("#content");
 
-  if (!nextDate) {
+  if (!content) {
     return;
   }
 
-  nextDate.textContent = date ? `${formatDate(date)} (${getDateDiff(date)}일 남음)` : "오류";
+  const sorted = [...content.children].sort((aElement, bElement) => {
+    try {
+      const a = aElement.querySelector(".remaining").textContent.match(/\d+/)[0];
+      const b = bElement.querySelector(".remaining").textContent.match(/\d+/)[0];
+      return Number(a) - Number(b);
+    } catch (error) {
+      return 0;
+    }
+  });
+  sorted.forEach(element => content.append(element));
 };
 //# sourceMappingURL=render.js.map

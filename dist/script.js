@@ -1,5 +1,6 @@
-import { initForm, renderItem } from "./render.js";
+import { initForm, renderItem, sort } from "./render.js";
 import { getSaved } from "./storage.js";
 initForm();
-getSaved().map(entry => renderItem(entry));
+const promises = getSaved().map(entry => renderItem(entry));
+Promise.all(promises).then(() => sort());
 //# sourceMappingURL=script.js.map
