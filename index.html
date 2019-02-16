@@ -6,7 +6,26 @@
     <title>Lunar Anniversary</title>
   </head>
   <body>
-    <div id="root"></div>
+    <div id="root">
+      <table>
+        <thead>
+          <tr id="header">
+            <th>기념일 이름</th>
+            <th>음력 생일</th>
+            <th>다음 생일</th>
+          </tr>
+        </thead>
+        <tbody id="content"></tbody>
+      </table>
+
+      <form name="addForm">
+        <input name="nameInput" type="text" placeholder="기념일 이름" />
+        <input name="yearInput" type="number" placeholder="음력 년" />
+        <input name="monthInput" type="number" placeholder="음력 월" />
+        <input name="dayInput" type="number" placeholder="음력 일" />
+        <button name="submitButton" type="submit">추가</button>
+      </form>
+    </div>
 
     <script src="dist/script.js" type="module"></script>
   </body>

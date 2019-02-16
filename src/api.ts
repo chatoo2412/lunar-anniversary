@@ -1,4 +1,5 @@
-import { parseDomToJson } from "./utils.js";
+import { parseResponse } from "./parsers.js";
+import { getNextDate } from "./date.js";
 
 const serviceKey =
   "yB2GxPS0T1X1yZRcUfVequ9huA3rLjadyg4LYIdEJpOqkP/rdkOBEv69fdKQPe5cz1ZunhDSUJ+Uf7x6cTW2RA==";
@@ -14,24 +15,20 @@ const get = async (restPath: string, params = new URLSearchParams()) => {
   ).then(response => response.text());
 };
 
-const getDates = async (month: number, day: number, leapMonth = "평") => {
+export const getNextAnniversary = async (lunMonth: number, lunDay: number) => {
   const year = new Date().getFullYear();
 
   const searchParams = new URLSearchParams({
-    fromSolYear: `${year - 2}`,
-    toSolYear: `${year + 10}`,
-    leapMonth,
-    lunMonth: `${month}`.padStart(2, "0"),
-    lunDay: `${day}`.padStart(2, "0")
+    fromSolYear: `${year - 1}`,
+    toSolYear: `${year + 1}`,
+    leapMonth: "평",
+    lunMonth: `${lunMonth}`.padStart(2, "0"),
+    lunDay: `${lunDay}`.padStart(2, "0")
   });
 
-  const response = await get("getSpcifyLunCalInfo", searchParams);
+  const response = await get("getSpcifyLunCalInfo", searchParams).then(
+    parseResponse
+  );
 
-  const dom = new DOMParser().parseFromString(response, "text/xml");
-
-  const { items } = parseDomToJson(dom.querySelector("items")!);
-
-  return items;
+  return getNextDate(response);
 };
-
-export { getDates };
